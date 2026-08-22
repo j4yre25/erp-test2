@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -15,11 +16,30 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        $roles = collect(['admin', 'guard supervisor', 'payroll'])
+            ->mapWithKeys(fn (string $roleName) => [
+                $roleName => Role::query()->firstOrCreate(['role_name' => $roleName]),
+            ]);
 
         User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'name' => 'Admin',
+            'email' => 'admin@socopa.test',
+            'password' => 'password',
+            'role_id' => $roles['admin']->id,
+        ]);
+
+        User::factory()->create([
+            'name' => 'Guard Supervisor',
+            'email' => 'guardsupervisor@socopa.test',
+            'password' => 'password',
+            'role_id' => $roles['guard supervisor']->id,
+        ]);
+
+        User::factory()->create([
+            'name' => 'Payroll Officer',
+            'email' => 'payroll@socopa.test',
+            'password' => 'password',
+            'role_id' => $roles['payroll']->id,
         ]);
     }
 }

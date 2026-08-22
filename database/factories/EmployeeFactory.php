@@ -28,6 +28,7 @@ class EmployeeFactory extends Factory
             'address' => fake()->address(),
             'employee_type' => 'guard',
             'employment_status' => 'active',
+            'availability_status' => 'available',
         ];
     }
 }
