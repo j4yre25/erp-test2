@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
-#[Fillable(['user_id', 'employee_number', 'first_name', 'last_name', 'contact_number', 'address', 'employee_type', 'employment_status'])]
+#[Fillable(['user_id', 'employee_number', 'first_name', 'last_name', 'contact_number', 'address', 'employee_type', 'employment_status', 'availability_status'])]
 class Employee extends Model
 {
     /** @use HasFactory<EmployeeFactory> */
@@ -18,6 +18,7 @@ class Employee extends Model
 
     protected $attributes = [
         'employment_status' => 'active',
+        'availability_status' => 'available',
     ];
 
     public function user(): BelongsTo

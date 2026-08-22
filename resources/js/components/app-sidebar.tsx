@@ -1,5 +1,5 @@
-import { Link } from '@inertiajs/react';
-import { BookOpen, FolderGit2, LayoutGrid } from 'lucide-react';
+import { Link, usePage } from '@inertiajs/react';
+import { BookOpen, FolderGit2, LayoutGrid, ShieldCheck, UserCog, Users } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
@@ -14,13 +14,44 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
-import type { NavItem } from '@/types';
+import { index as clientsIndex } from '@/routes/clients';
+import { index as deploymentsIndex } from '@/routes/deployments';
+import { index as guardsIndex } from '@/routes/guards';
+import { index as userRolesIndex } from '@/routes/user-roles';
+import type { Auth, NavItem } from '@/types';
 
 const mainNavItems: NavItem[] = [
     {
         title: 'Dashboard',
         href: dashboard(),
         icon: LayoutGrid,
+    },
+];
+
+const masterDataNavItems: Array<NavItem & { roles: string[] }> = [
+    {
+        title: 'Clients',
+        href: clientsIndex(),
+        icon: Users,
+        roles: ['admin'],
+    },
+    {
+        title: 'Guards',
+        href: guardsIndex(),
+        icon: ShieldCheck,
+        roles: ['payroll'],
+    },
+    {
+        title: 'Deployments',
+        href: deploymentsIndex(),
+        icon: FolderGit2,
+        roles: ['guard supervisor'],
+    },
+    {
+        title: 'User Roles',
+        href: userRolesIndex(),
+        icon: UserCog,
+        roles: ['admin'],
     },
 ];
 
@@ -38,9 +69,16 @@ const footerNavItems: NavItem[] = [
 ];
 
 export function AppSidebar() {
+    const { auth } = usePage<{ auth: Auth }>().props;
+    const roleName = auth.user.role?.role_name?.toLowerCase() ?? '';
+
+    const visibleMasterDataItems = masterDataNavItems.filter((item) =>
+        item.roles.includes(roleName),
+    );
+
     return (
-        <Sidebar collapsible="icon" variant="inset">
-            <SidebarHeader>
+        <Sidebar collapsible="icon" variant="sidebar">
+            <SidebarHeader className="border-b border-sidebar-border py-5">
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
@@ -52,11 +90,15 @@ export function AppSidebar() {
                 </SidebarMenu>
             </SidebarHeader>
 
-            <SidebarContent>
+            <SidebarContent className="gap-0 py-2">
                 <NavMain items={mainNavItems} />
+
+                {visibleMasterDataItems.length > 0 && (
+                    <NavMain items={visibleMasterDataItems} label="Master Data" />
+                )}
             </SidebarContent>
 
-            <SidebarFooter>
+            <SidebarFooter className="border-t border-sidebar-border">
                 <NavFooter items={footerNavItems} className="mt-auto" />
                 <NavUser />
             </SidebarFooter>

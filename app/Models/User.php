@@ -46,6 +46,21 @@ class User extends Authenticatable
         return $this->hasOne(Employee::class);
     }
 
+    public function hasRole(string ...$roleNames): bool
+    {
+        $userRoleName = str($this->role?->role_name ?? '')->lower()->replace([' ', '_'], '-')->toString();
+
+        foreach ($roleNames as $roleName) {
+            $normalizedRoleName = str($roleName)->lower()->replace([' ', '_'], '-')->toString();
+
+            if ($userRoleName === $normalizedRoleName) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /**
      * Get the attributes that should be cast.
      *
