@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
@@ -29,7 +29,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  */
-#[Fillable(['name', 'first_name', 'last_name', 'email', 'password', 'role_id'])]
+#[Fillable(['name', 'first_name', 'last_name', 'email', 'password', 'role_id', 'regular_rate'])]
 #[Hidden(['password', 'two_factor_secret', 'two_factor_recovery_codes', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -41,9 +41,9 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class);
     }
 
-    public function deployments(): HasMany
+    public function employee(): HasOne
     {
-        return $this->hasMany(Deployment::class);
+        return $this->hasOne(Employee::class);
     }
 
     /**
@@ -56,6 +56,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'regular_rate' => 'decimal:2',
         ];
     }
 }

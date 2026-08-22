@@ -9,14 +9,14 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 
 /**
- * @property Carbon|null $start_date
- * @property Carbon|null $end_date
+ * @property Carbon $start_date
+ * @property Carbon $end_date
  */
-#[Fillable(['client_id', 'employee_id', 'post_name', 'start_date', 'end_date', 'status', 'billing_rate'])]
-class Deployment extends Model
+#[Fillable(['client_id', 'start_date', 'end_date', 'status'])]
+class PayrollPeriod extends Model
 {
     protected $attributes = [
-        'status' => 'active',
+        'status' => 'open',
     ];
 
     public function client(): BelongsTo
@@ -24,14 +24,14 @@ class Deployment extends Model
         return $this->belongsTo(Client::class);
     }
 
-    public function employee(): BelongsTo
-    {
-        return $this->belongsTo(Employee::class);
-    }
-
     public function dailyTimeRecords(): HasMany
     {
         return $this->hasMany(DailyTimeRecord::class);
+    }
+
+    public function accountReceivables(): HasMany
+    {
+        return $this->hasMany(AccountReceivable::class);
     }
 
     public function payrollLines(): HasMany
@@ -47,7 +47,6 @@ class Deployment extends Model
         return [
             'start_date' => 'date',
             'end_date' => 'date',
-            'billing_rate' => 'decimal:2',
         ];
     }
 }

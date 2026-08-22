@@ -15,6 +15,7 @@ return new class extends Migration
             $table->foreignId('role_id')->nullable()->after('id')->constrained()->nullOnDelete();
             $table->string('first_name')->nullable()->after('name');
             $table->string('last_name')->nullable()->after('first_name');
+            $table->decimal('regular_rate', 12, 2)->default(0)->after('last_name');
         });
     }
 
@@ -25,7 +26,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropForeign(['role_id']);
-            $table->dropColumn(['role_id', 'first_name', 'last_name']);
+            $table->dropColumn(['role_id', 'first_name', 'last_name', 'regular_rate']);
         });
     }
 };

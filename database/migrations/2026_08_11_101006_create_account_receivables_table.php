@@ -11,20 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('invoices', function (Blueprint $table) {
+        Schema::create('account_receivables', function (Blueprint $table) {
             $table->id();
             $table->foreignId('client_id')->constrained()->restrictOnDelete();
-            $table->foreignId('deployment_id')->constrained()->restrictOnDelete();
-            $table->string('invoice_number')->unique();
-            $table->date('invoice_date')->index();
+            $table->foreignId('payroll_period_id')->constrained()->restrictOnDelete();
+            $table->string('account_receivable_number')->unique();
+            $table->date('account_receivable_date')->index();
             $table->date('due_date')->nullable()->index();
             $table->decimal('subtotal', 12, 2)->default(0);
             $table->decimal('tax_amount', 12, 2)->default(0);
             $table->decimal('total_amount', 12, 2)->default(0);
+            $table->decimal('running_balance', 12, 2)->default(0);
             $table->string('status')->default('draft')->index();
             $table->timestamps();
 
-            $table->unique(['client_id', 'deployment_id']);
+            $table->unique(['client_id', 'payroll_period_id']);
         });
     }
 
@@ -33,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('invoices');
+        Schema::dropIfExists('account_receivables');
     }
 };

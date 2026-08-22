@@ -12,7 +12,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $time_in
  * @property Carbon|null $time_out
  */
-#[Fillable(['deployment_id', 'invoice_id', 'work_date', 'time_in', 'time_out', 'regular_hours', 'overtime_hours', 'status'])]
+#[Fillable(['payroll_period_id', 'deployment_id', 'work_date', 'time_in', 'time_out', 'regular_hours', 'overtime_hours', 'status'])]
 class DailyTimeRecord extends Model
 {
     protected $attributes = [
@@ -21,14 +21,14 @@ class DailyTimeRecord extends Model
         'overtime_hours' => 0,
     ];
 
+    public function payrollPeriod(): BelongsTo
+    {
+        return $this->belongsTo(PayrollPeriod::class);
+    }
+
     public function deployment(): BelongsTo
     {
         return $this->belongsTo(Deployment::class);
-    }
-
-    public function invoice(): BelongsTo
-    {
-        return $this->belongsTo(Invoice::class);
     }
 
     /**
