@@ -13,8 +13,7 @@ return new class extends Migration
     {
         Schema::create('daily_time_records', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('deployment_id')->constrained()->restrictOnDelete();
-            $table->foreignId('invoice_id')->nullable()->constrained()->nullOnDelete();
+            $table->foreignId('payroll_period_id')->constrained()->restrictOnDelete();
             $table->date('work_date')->index();
             $table->dateTime('time_in')->nullable();
             $table->dateTime('time_out')->nullable();
@@ -23,8 +22,7 @@ return new class extends Migration
             $table->string('status')->default('pending')->index();
             $table->timestamps();
 
-            $table->unique(['deployment_id', 'invoice_id']);
-            $table->unique(['deployment_id', 'work_date']);
+            $table->unique(['payroll_period_id', 'work_date']);
         });
     }
 

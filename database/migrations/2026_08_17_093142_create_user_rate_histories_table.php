@@ -11,16 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('posting_payments', function (Blueprint $table) {
+        Schema::create('user_rate_histories', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('invoice_id')->constrained()->restrictOnDelete();
-            $table->date('payment_date')->index();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('rate_type_id')->constrained()->restrictOnDelete();
             $table->decimal('amount', 12, 2);
-            $table->string('payment_method')->nullable();
-            $table->string('reference_number')->nullable()->index();
+            $table->date('effective_from')->index();
+            $table->date('effective_until')->nullable()->index();
             $table->text('remarks')->nullable();
-            $table->string('status')->default('posted')->index();
             $table->timestamps();
+
+            $table->unique(['user_id', 'rate_type_id', 'effective_from']);
         });
     }
 
@@ -29,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('posting_payments');
+        Schema::dropIfExists('user_rate_histories');
     }
 };
