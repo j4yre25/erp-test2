@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $roles = collect(['admin', 'guard supervisor', 'payroll'])
+        $roles = collect(['admin', 'guard supervisor', 'payroll', 'ar', 'general manager'])
             ->mapWithKeys(fn (string $roleName) => [
                 $roleName => Role::query()->firstOrCreate(['role_name' => $roleName]),
             ]);
@@ -40,6 +40,20 @@ class DatabaseSeeder extends Seeder
             'email' => 'payroll@socopa.test',
             'password' => 'password',
             'role_id' => $roles['payroll']->id,
+        ]);
+
+        User::factory()->create([
+            'name' => 'AR Officer',
+            'email' => 'ar@socopa.test',
+            'password' => 'password',
+            'role_id' => $roles['ar']->id,
+        ]);
+
+        User::factory()->create([
+            'name' => 'General Manager',
+            'email' => 'gm@socopa.test',
+            'password' => 'password',
+            'role_id' => $roles['general manager']->id,
         ]);
     }
 }
