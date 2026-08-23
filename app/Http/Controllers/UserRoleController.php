@@ -16,7 +16,7 @@ class UserRoleController extends Controller
     {
         $this->authorize('viewAny', User::class);
 
-        return Inertia::render('master-data/user-roles/index', [
+        return Inertia::render('master-data/user-management/index', [
             'users' => User::query()
                 ->with('role')
                 ->orderBy('name')

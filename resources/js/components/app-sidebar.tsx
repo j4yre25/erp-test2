@@ -78,7 +78,7 @@ const masterDataNavItems: Array<NavItem & { roles: string[] }> = [
         roles: ['guard supervisor', 'admin'],
     },
     {
-        title: 'User Roles',
+        title: 'User Management',
         href: userRolesIndex(),
         icon: UserCog,
         roles: ['admin'],
