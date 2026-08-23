@@ -24,6 +24,14 @@ class UpdateUserRoleRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'name' => ['required', 'string', 'max:255'],
+            'email' => [
+                'required',
+                'string',
+                'email',
+                'max:255',
+                Rule::unique('users', 'email')->ignore($this->route('user')),
+            ],
             'role_id' => ['nullable', 'integer', Rule::exists('roles', 'id')],
         ];
     }
