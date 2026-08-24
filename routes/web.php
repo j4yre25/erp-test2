@@ -22,7 +22,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('payroll-periods/{payroll_period}/close', [PayrollPeriodController::class, 'close'])->name('payroll-periods.close');
 
     Route::resource('statement-of-accounts', AccountReceivableController::class)->parameters([
-        'statement_of_accounts' => 'account_receivable',
+        'statement-of-accounts' => 'account_receivable',
     ]);
     Route::post('statement-of-accounts/{account_receivable}/submit', [AccountReceivableController::class, 'submit'])->name('statement-of-accounts.submit');
 

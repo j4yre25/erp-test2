@@ -58,6 +58,7 @@ return new class extends Migration
             DB::table('payroll_periods')->where('status', '!=', 'closed')->orWhereNull('status')->update(['payroll_period_status_id' => $openStatusId]);
 
             Schema::table('payroll_periods', function (Blueprint $table) {
+                $table->dropIndex(['status']);
                 $table->dropColumn('status');
             });
         }
@@ -126,6 +127,7 @@ return new class extends Migration
             DB::table('account_receivables')->where('status', 'draft')->orWhereNull('status')->update(['account_receivable_status_id' => $draftStatusId]);
 
             Schema::table('account_receivables', function (Blueprint $table) {
+                $table->dropIndex(['status']);
                 $table->dropColumn('status');
             });
         }

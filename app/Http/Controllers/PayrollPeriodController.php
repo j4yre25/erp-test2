@@ -84,9 +84,12 @@ class PayrollPeriodController extends Controller
 
     public function close(ClosePayrollPeriodRequest $request, PayrollPeriod $payrollPeriod): RedirectResponse
     {
-        $this->closePayrollPeriodAction->execute($payrollPeriod);
-
-        Inertia::flash('toast', ['type' => 'success', 'message' => __('Payroll period closed and pay lines computed successfully.')]);
+        try {
+            $this->closePayrollPeriodAction->execute($payrollPeriod);
+            Inertia::flash('toast', ['type' => 'success', 'message' => __('Payroll period closed and pay lines computed successfully.')]);
+        } catch (\InvalidArgumentException $e) {
+            Inertia::flash('toast', ['type' => 'error', 'message' => $e->getMessage()]);
+        }
 
         return to_route('payroll-periods.show', $payrollPeriod);
     }
