@@ -55,5 +55,7 @@ class DatabaseSeeder extends Seeder
             'password' => 'password',
             'role_id' => $roles['general manager']->id,
         ]);
+
+        $this->call(GuardAndPayrollSeeder::class);
     }
 }

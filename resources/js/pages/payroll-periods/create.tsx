@@ -6,6 +6,14 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { index } from '@/routes/payroll-periods';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
+import { DatePicker } from '@/components/ui/date-picker';
 
 type ClientOption = {
     id: number;
@@ -16,8 +24,6 @@ type PageProps = {
     clients: ClientOption[];
 };
 
-const selectClassName =
-    'border-input flex h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] md:text-sm';
 
 export default function PayrollPeriodsCreate() {
     const { clients } = usePage<PageProps>().props;
@@ -37,35 +43,31 @@ export default function PayrollPeriodsCreate() {
                         <>
                             <div className="grid gap-2">
                                 <Label htmlFor="client_id">Client</Label>
-                                <select
-                                    id="client_id"
-                                    name="client_id"
-                                    required
-                                    defaultValue=""
-                                    className={selectClassName}
-                                >
-                                    <option value="" disabled>
-                                        Select a client
-                                    </option>
-                                    {clients.map((client) => (
-                                        <option key={client.id} value={client.id}>
-                                            {client.name}
-                                        </option>
-                                    ))}
-                                </select>
+                                <Select name="client_id" required>
+                                    <SelectTrigger id="client_id" className="w-full">
+                                        <SelectValue placeholder="Select a client" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {clients.map((client) => (
+                                            <SelectItem key={client.id} value={client.id.toString()}>
+                                                {client.name}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
                                 <InputError message={errors.client_id} />
                             </div>
 
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="grid gap-2">
                                     <Label htmlFor="start_date">Start Date</Label>
-                                    <Input id="start_date" name="start_date" type="date" required />
+                                    <DatePicker id="start_date" name="start_date" required />
                                     <InputError message={errors.start_date} />
                                 </div>
 
                                 <div className="grid gap-2">
                                     <Label htmlFor="end_date">End Date</Label>
-                                    <Input id="end_date" name="end_date" type="date" required />
+                                    <DatePicker id="end_date" name="end_date" required />
                                     <InputError message={errors.end_date} />
                                 </div>
                             </div>
