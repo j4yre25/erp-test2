@@ -6,6 +6,14 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { index } from '@/routes/statement-of-accounts';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
+import { DatePicker } from '@/components/ui/date-picker';
 
 type AvailablePeriod = {
     id: number;
@@ -19,8 +27,6 @@ type PageProps = {
     available_periods: AvailablePeriod[];
 };
 
-const selectClassName =
-    'border-input flex h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] md:text-sm';
 
 function formatCurrency(amount: number): string {
     return new Intl.NumberFormat('en-PH', {
@@ -57,34 +63,29 @@ export default function StatementOfAccountsCreate() {
                             <>
                                 <div className="grid gap-2">
                                     <Label htmlFor="payroll_period_id">Closed Payroll Period</Label>
-                                    <select
-                                        id="payroll_period_id"
-                                        name="payroll_period_id"
-                                        required
-                                        defaultValue=""
-                                        className={selectClassName}
-                                    >
-                                        <option value="" disabled>
-                                            Select a closed payroll period
-                                        </option>
-                                        {available_periods.map((period) => (
-                                            <option key={period.id} value={period.id}>
-                                                {period.client_name} ({period.start_date} to {period.end_date}) — Billable: {formatCurrency(period.total_billable)}
-                                            </option>
-                                        ))}
-                                    </select>
+                                    <Select name="payroll_period_id" required>
+                                        <SelectTrigger id="payroll_period_id" className="w-full">
+                                            <SelectValue placeholder="Select a closed payroll period" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {available_periods.map((period) => (
+                                                <SelectItem key={period.id} value={period.id.toString()}>
+                                                    {period.client_name} ({period.start_date} to {period.end_date}) — Billable: {formatCurrency(period.total_billable)}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
                                     <InputError message={errors.payroll_period_id} />
                                 </div>
 
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="grid gap-2">
                                         <Label htmlFor="account_receivable_date">Statement Date</Label>
-                                        <Input
+                                        <DatePicker
                                             id="account_receivable_date"
                                             name="account_receivable_date"
-                                            type="date"
+                                            value={new Date().toISOString().split('T')[0]}
                                             required
-                                            defaultValue={new Date().toISOString().split('T')[0]}
                                         />
                                         <InputError message={errors.account_receivable_date} />
                                     </div>
@@ -94,9 +95,8 @@ export default function StatementOfAccountsCreate() {
                                         <Input
                                             id="tax_amount"
                                             name="tax_amount"
-                                            type="number"
-                                            step="0.01"
-                                            min={0}
+                                            type="text"
+                                            inputMode="decimal"
                                             defaultValue="0.00"
                                         />
                                         <InputError message={errors.tax_amount} />

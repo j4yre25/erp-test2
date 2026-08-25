@@ -1,4 +1,5 @@
 import { Moon, Sun } from 'lucide-react';
+import { useState, useEffect } from 'react';
 import { Breadcrumbs } from '@/components/breadcrumbs';
 import { Button } from '@/components/ui/button';
 import { SidebarTrigger } from '@/components/ui/sidebar';
@@ -11,6 +12,11 @@ export function AppSidebarHeader({
     breadcrumbs?: BreadcrumbItemType[];
 }) {
     const { resolvedAppearance, updateAppearance } = useAppearance();
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     return (
         <header className="flex h-16 shrink-0 items-center justify-between gap-2 border-b border-sidebar-border bg-card px-6 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-14 md:px-6">
@@ -29,8 +35,12 @@ export function AppSidebarHeader({
                     )
                 }
             >
-                {resolvedAppearance === 'dark' ? (
-                    <Sun className="size-4.5" />
+                {mounted ? (
+                    resolvedAppearance === 'dark' ? (
+                        <Sun className="size-4.5" />
+                    ) : (
+                        <Moon className="size-4.5" />
+                    )
                 ) : (
                     <Moon className="size-4.5" />
                 )}
