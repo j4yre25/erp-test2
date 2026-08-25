@@ -5,6 +5,7 @@ import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { index } from '@/routes/guards';
 
 type Guard = {
@@ -27,9 +28,6 @@ type Guard = {
 type PageProps = {
     guard: Guard;
 };
-
-const selectClassName =
-    'border-input flex h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] md:text-sm';
 
 export default function GuardsEdit() {
     const { guard } = usePage<PageProps>().props;
@@ -84,32 +82,30 @@ export default function GuardsEdit() {
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="grid gap-2">
                                     <Label htmlFor="employment_status">Employment Status</Label>
-                                    <select
-                                        id="employment_status"
-                                        name="employment_status"
-                                        required
-                                        defaultValue={guard.employment_status}
-                                        className={selectClassName}
-                                    >
-                                        <option value="active">Active</option>
-                                        <option value="inactive">Inactive</option>
-                                    </select>
+                                    <Select name="employment_status" defaultValue={guard.employment_status} required>
+                                        <SelectTrigger id="employment_status" className="w-full">
+                                            <SelectValue placeholder="Select status" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="active">Active</SelectItem>
+                                            <SelectItem value="inactive">Inactive</SelectItem>
+                                        </SelectContent>
+                                    </Select>
                                     <InputError message={errors.employment_status} />
                                 </div>
 
                                 <div className="grid gap-2">
                                     <Label htmlFor="availability_status">Availability Status</Label>
-                                    <select
-                                        id="availability_status"
-                                        name="availability_status"
-                                        required
-                                        defaultValue={guard.availability_status}
-                                        className={selectClassName}
-                                    >
-                                        <option value="available">Available</option>
-                                        <option value="deployed">Deployed</option>
-                                        <option value="inactive">Inactive</option>
-                                    </select>
+                                    <Select name="availability_status" defaultValue={guard.availability_status} required>
+                                        <SelectTrigger id="availability_status" className="w-full">
+                                            <SelectValue placeholder="Select status" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="available">Available</SelectItem>
+                                            <SelectItem value="deployed">Deployed</SelectItem>
+                                            <SelectItem value="inactive">Inactive</SelectItem>
+                                        </SelectContent>
+                                    </Select>
                                     <InputError message={errors.availability_status} />
                                 </div>
                             </div>
@@ -120,9 +116,8 @@ export default function GuardsEdit() {
                                     <Input
                                         id="daily_rate"
                                         name="daily_rate"
-                                        type="number"
-                                        step="0.01"
-                                        min={0}
+                                        type="text"
+                                        inputMode="decimal"
                                         required
                                         defaultValue={guard.daily_rate ?? ''}
                                     />
@@ -134,9 +129,8 @@ export default function GuardsEdit() {
                                     <Input
                                         id="night_differential_rate"
                                         name="night_differential_rate"
-                                        type="number"
-                                        step="0.01"
-                                        min={0}
+                                        type="text"
+                                        inputMode="decimal"
                                         required
                                         defaultValue={guard.night_differential_rate ?? ''}
                                     />
