@@ -31,6 +31,17 @@ function formatCurrency(amount: number): string {
     }).format(amount);
 }
 
+function formatDate(dateString: string | null): string {
+    if (!dateString) return '—';
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return dateString;
+    return new Intl.DateTimeFormat('en-US', {
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric',
+    }).format(date);
+}
+
 export default function PayrollPeriodsIndex() {
     const { periods, can } = usePage<PageProps>().props;
 
@@ -70,7 +81,7 @@ export default function PayrollPeriodsIndex() {
                                 <tr key={period.id} className="border-b last:border-b-0">
                                     <td className="px-4 py-2 font-medium">{period.client_name}</td>
                                     <td className="px-4 py-2">
-                                        {period.start_date} to {period.end_date}
+                                        {formatDate(period.start_date)} to {formatDate(period.end_date)}
                                     </td>
                                     <td className="px-4 py-2">
                                         <Badge variant={period.status === 'open' ? 'default' : 'secondary'}>
