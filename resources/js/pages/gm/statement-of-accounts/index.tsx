@@ -32,6 +32,17 @@ function formatCurrency(amount: number): string {
     }).format(amount);
 }
 
+function formatDate(dateString: string | null): string {
+    if (!dateString) return '—';
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return dateString;
+    return new Intl.DateTimeFormat('en-US', {
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric',
+    }).format(date);
+}
+
 export default function GeneralManagerSoaIndex() {
     const { pending_soas, approved_soas } = usePage<PageProps>().props;
 
@@ -80,7 +91,7 @@ export default function GeneralManagerSoaIndex() {
                                         <td className="px-4 py-2">{soa.client_name}</td>
                                         <td className="px-4 py-2 text-xs">{soa.period_range}</td>
                                         <td className="px-4 py-2">{soa.submitted_by}</td>
-                                        <td className="px-4 py-2 text-xs text-muted-foreground">{soa.submitted_at}</td>
+                                        <td className="px-4 py-2 text-xs text-muted-foreground">{formatDate(soa.submitted_at)}</td>
                                         <td className="px-4 py-2 font-bold text-base">{formatCurrency(soa.total_amount)}</td>
                                         <td className="px-4 py-2">
                                             <Button size="sm" asChild>
@@ -132,9 +143,9 @@ export default function GeneralManagerSoaIndex() {
                                     <tr key={soa.id} className="border-b last:border-b-0">
                                         <td className="px-4 py-2 font-medium">{soa.account_receivable_number}</td>
                                         <td className="px-4 py-2">{soa.client_name}</td>
-                                        <td className="px-4 py-2">{soa.due_date}</td>
+                                        <td className="px-4 py-2">{formatDate(soa.due_date)}</td>
                                         <td className="px-4 py-2">{soa.approved_by}</td>
-                                        <td className="px-4 py-2 text-xs text-muted-foreground">{soa.approved_at}</td>
+                                        <td className="px-4 py-2 text-xs text-muted-foreground">{formatDate(soa.approved_at)}</td>
                                         <td className="px-4 py-2 font-semibold">{formatCurrency(soa.total_amount)}</td>
                                         <td className="px-4 py-2 font-semibold text-primary">{formatCurrency(soa.running_balance)}</td>
                                         <td className="px-4 py-2">
