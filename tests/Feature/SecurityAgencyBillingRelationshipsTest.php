@@ -54,7 +54,7 @@ test('security agency billing records follow the payroll period to receivable en
     $client = Client::create([
         'name' => 'Acme Client',
         'billing_address' => '123 Billing Street',
-        'payroll_period' => 'Semi-monthly',
+        'payroll_period' => 'semi_monthly',
         'cutoff_type' => 'fixed_days',
         'first_cutoff_day' => 15,
         'second_cutoff_day' => 30,

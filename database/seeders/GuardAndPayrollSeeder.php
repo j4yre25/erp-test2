@@ -30,11 +30,11 @@ class GuardAndPayrollSeeder extends Seeder
             ['name' => 'Acme Corp'],
             [
                 'billing_address' => '123 Acme St',
-                'payroll_period' => 'semi-monthly',
-                'cutoff_type' => 'standard',
+                'payroll_period' => 'semi_monthly',
+                'cutoff_type' => 'fixed_days',
                 'first_cutoff_day' => 15,
                 'second_cutoff_day' => 30,
-                'payroll_frequency' => 'bi-weekly',
+                'payroll_frequency' => 'bi_weekly',
                 'company_address' => '123 Acme St',
                 'contact_person' => 'John Doe'
             ]

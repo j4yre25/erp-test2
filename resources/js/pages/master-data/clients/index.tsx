@@ -3,6 +3,7 @@ import ClientController from '@/actions/App/Http/Controllers/ClientController';
 import ConfirmDeleteButton from '@/components/confirm-delete-button';
 import Heading from '@/components/heading';
 import { Button } from '@/components/ui/button';
+import { optionLabel, PAYROLL_PERIOD_OPTIONS } from '@/lib/client-payroll-options';
 import { create, edit, index } from '@/routes/clients';
 
 type Client = {
@@ -72,7 +73,7 @@ export default function ClientsIndex() {
                                 <tr key={client.id} className="border-b last:border-b-0">
                                     <td className="px-4 py-2 font-medium">{client.name}</td>
                                     <td className="px-4 py-2">{client.contact_person || '—'}</td>
-                                    <td className="px-4 py-2">{client.payroll_period || '—'}</td>
+                                    <td className="px-4 py-2">{optionLabel(PAYROLL_PERIOD_OPTIONS, client.payroll_period)}</td>
                                     <td className="px-4 py-2">{cutoffLabel(client)}</td>
                                     <td className="px-4 py-2">
                                         <div className="flex items-center gap-2">

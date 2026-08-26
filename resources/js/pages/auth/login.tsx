@@ -1,4 +1,5 @@
 import { Form, Head } from '@inertiajs/react';
+import { ShieldCheck } from 'lucide-react';
 import InputError from '@/components/input-error';
 import PasswordInput from '@/components/password-input';
 import TextLink from '@/components/text-link';
@@ -19,6 +20,11 @@ export default function Login({ status, canResetPassword }: Props) {
     return (
         <>
             <Head title="Log in" />
+
+            <div className="mb-2 flex items-center justify-center gap-2 rounded-md border border-primary/20 bg-primary/5 px-3 py-2 text-center text-xs font-medium text-muted-foreground">
+                <ShieldCheck className="size-3.5 shrink-0 text-primary" />
+                Restricted to authorized SOCOPA Security Agency personnel
+            </div>
 
             <Form
                 {...store.form()}
@@ -96,11 +102,15 @@ export default function Login({ status, canResetPassword }: Props) {
                     {status}
                 </div>
             )}
+
+            <p className="text-center text-xs text-muted-foreground">
+                Unauthorized access is prohibited and all sign-in attempts are logged.
+            </p>
         </>
     );
 }
 
 Login.layout = {
-    title: 'Sign in to SOCOPA',
-    description: 'Enter your email and password to access the mini ERP',
+    title: 'SOCOPA Personnel Portal',
+    description: 'Sign in with your company-issued credentials to continue.',
 };

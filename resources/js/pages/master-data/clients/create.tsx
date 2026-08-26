@@ -5,6 +5,8 @@ import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { CUTOFF_TYPE_OPTIONS, PAYROLL_FREQUENCY_OPTIONS, PAYROLL_PERIOD_OPTIONS } from '@/lib/client-payroll-options';
 import { index } from '@/routes/clients';
 
 export default function ClientsCreate() {
@@ -48,13 +50,35 @@ export default function ClientsCreate() {
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="grid gap-2">
                                     <Label htmlFor="payroll_period">Payroll Period</Label>
-                                    <Input id="payroll_period" name="payroll_period" placeholder="e.g. Semi-monthly" />
+                                    <Select name="payroll_period">
+                                        <SelectTrigger id="payroll_period" className="w-full">
+                                            <SelectValue placeholder="Select payroll period" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {PAYROLL_PERIOD_OPTIONS.map((option) => (
+                                                <SelectItem key={option.value} value={option.value}>
+                                                    {option.label}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
                                     <InputError message={errors.payroll_period} />
                                 </div>
 
                                 <div className="grid gap-2">
                                     <Label htmlFor="payroll_frequency">Payroll Frequency</Label>
-                                    <Input id="payroll_frequency" name="payroll_frequency" placeholder="e.g. Twice a month" />
+                                    <Select name="payroll_frequency">
+                                        <SelectTrigger id="payroll_frequency" className="w-full">
+                                            <SelectValue placeholder="Select payroll frequency" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {PAYROLL_FREQUENCY_OPTIONS.map((option) => (
+                                                <SelectItem key={option.value} value={option.value}>
+                                                    {option.label}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
                                     <InputError message={errors.payroll_frequency} />
                                 </div>
                             </div>
@@ -62,7 +86,18 @@ export default function ClientsCreate() {
                             <div className="grid grid-cols-3 gap-4">
                                 <div className="grid gap-2">
                                     <Label htmlFor="cutoff_type">Cutoff Type</Label>
-                                    <Input id="cutoff_type" name="cutoff_type" placeholder="e.g. Fixed" />
+                                    <Select name="cutoff_type">
+                                        <SelectTrigger id="cutoff_type" className="w-full">
+                                            <SelectValue placeholder="Select cutoff type" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {CUTOFF_TYPE_OPTIONS.map((option) => (
+                                                <SelectItem key={option.value} value={option.value}>
+                                                    {option.label}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
                                     <InputError message={errors.cutoff_type} />
                                 </div>
 

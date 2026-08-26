@@ -23,14 +23,24 @@ test('guests are redirected to the login page for master data routes', function 
     $this->get(route('user-roles.index'))->assertRedirect(route('login'));
 });
 
-test('admin can manage clients and user roles but not guards or deployments', function () {
+test('admin can manage clients, user roles, and guards, and can view (but not manage) deployments', function () {
     actingAsRole('admin');
 
     $this->get(route('clients.index'))->assertOk();
     $this->get(route('user-roles.index'))->assertOk();
+    $this->get(route('guards.index'))->assertOk();
+    $this->get(route('deployments.index'))->assertOk();
 
-    $this->get(route('guards.index'))->assertForbidden();
-    $this->get(route('deployments.index'))->assertForbidden();
+    $client = Client::query()->create(['name' => 'Acme Corp']);
+    $guard = Employee::factory()->create();
+
+    $this->post(route('deployments.store'), [
+        'client_id' => $client->id,
+        'employee_id' => $guard->id,
+        'start_date' => now()->toDateString(),
+        'billing_rate' => 1500,
+        'status' => 'active',
+    ])->assertForbidden();
 });
 
 test('payroll can manage guards but not clients or deployments', function () {

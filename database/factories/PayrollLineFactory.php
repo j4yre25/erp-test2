@@ -26,7 +26,7 @@ class PayrollLineFactory extends Factory
             'payroll_period_id' => function (): int {
                 $client = Client::create([
                     'name' => fake()->company(),
-                    'payroll_period' => 'Semi-monthly',
+                    'payroll_period' => 'semi_monthly',
                     'cutoff_type' => 'fixed_days',
                     'first_cutoff_day' => 15,
                     'second_cutoff_day' => 30,
