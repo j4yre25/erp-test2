@@ -32,11 +32,11 @@ class UpdateClientRequest extends FormRequest
             'billing_address' => ['nullable', 'string', 'max:5000'],
             'company_address' => ['nullable', 'string', 'max:5000'],
             'contact_person' => ['nullable', 'string', 'max:255'],
-            'payroll_period' => ['nullable', 'string', 'max:255'],
-            'cutoff_type' => ['nullable', 'string', 'max:255'],
+            'payroll_period' => ['nullable', 'string', Rule::in(['weekly', 'semi_monthly', 'monthly'])],
+            'cutoff_type' => ['nullable', 'string', Rule::in(['fixed_days', 'end_of_month'])],
             'first_cutoff_day' => ['nullable', 'integer', 'between:1,31'],
             'second_cutoff_day' => ['nullable', 'integer', 'between:1,31', 'different:first_cutoff_day'],
-            'payroll_frequency' => ['nullable', 'string', 'max:255'],
+            'payroll_frequency' => ['nullable', 'string', Rule::in(['weekly', 'bi_weekly', 'semi_monthly', 'monthly'])],
         ];
     }
 }

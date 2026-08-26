@@ -12,7 +12,7 @@ class DeploymentPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasRole('guard supervisor');
+        return $user->hasRole('guard supervisor') || $user->hasRole('admin');
     }
 
     /**
@@ -20,7 +20,7 @@ class DeploymentPolicy
      */
     public function view(User $user, Deployment $deployment): bool
     {
-        return $user->hasRole('guard supervisor');
+        return $user->hasRole('guard supervisor') || $user->hasRole('admin');
     }
 
     /**

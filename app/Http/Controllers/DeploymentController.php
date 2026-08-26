@@ -30,7 +30,11 @@ class DeploymentController extends Controller
                 ->with(['client', 'employee'])
                 ->latest()
                 ->get()
-                ->map(fn (Deployment $deployment): array => $this->deploymentPayload($deployment))
+                ->map(fn (Deployment $deployment): array => [
+                    ...$this->deploymentPayload($deployment),
+                    'can_update' => $request->user()->can('update', $deployment),
+                    'can_delete' => $request->user()->can('delete', $deployment),
+                ])
                 ->values(),
             'can' => [
                 'create_deployment' => $request->user()->can('create', Deployment::class),

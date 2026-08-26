@@ -17,6 +17,8 @@ type Deployment = {
     end_date: string | null;
     billing_rate: string | null;
     status: string;
+    can_update: boolean;
+    can_delete: boolean;
 };
 
 type PageProps = {
@@ -77,15 +79,23 @@ export default function DeploymentsIndex() {
                                     </td>
                                     <td className="px-4 py-2">
                                         <div className="flex items-center gap-2">
-                                            <Button size="sm" variant="outline" asChild>
-                                                <Link href={edit(deployment.id)}>Edit</Link>
-                                            </Button>
+                                            {deployment.can_update && (
+                                                <Button size="sm" variant="outline" asChild>
+                                                    <Link href={edit(deployment.id)}>Edit</Link>
+                                                </Button>
+                                            )}
 
-                                            <ConfirmDeleteButton
-                                                form={DeploymentController.destroy.form(deployment.id)}
-                                                title="Delete this deployment?"
-                                                description={`This will permanently remove the deployment for ${deployment.guard_name} and cannot be undone.`}
-                                            />
+                                            {deployment.can_delete && (
+                                                <ConfirmDeleteButton
+                                                    form={DeploymentController.destroy.form(deployment.id)}
+                                                    title="Delete this deployment?"
+                                                    description={`This will permanently remove the deployment for ${deployment.guard_name} and cannot be undone.`}
+                                                />
+                                            )}
+
+                                            {!deployment.can_update && !deployment.can_delete && (
+                                                <span className="text-muted-foreground">—</span>
+                                            )}
                                         </div>
                                     </td>
                                 </tr>
