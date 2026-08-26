@@ -40,6 +40,17 @@ function formatCurrency(amount: number): string {
     }).format(amount);
 }
 
+function formatDate(dateString: string | null): string {
+    if (!dateString) return '—';
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return dateString;
+    return new Intl.DateTimeFormat('en-US', {
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric',
+    }).format(date);
+}
+
 function statusBadgeVariant(status: string): 'default' | 'secondary' | 'outline' | 'destructive' {
     switch (status) {
         case 'approved':
@@ -97,8 +108,8 @@ export default function StatementOfAccountsIndex() {
                                         </Link>
                                     </td>
                                     <td className="px-4 py-2">{soa.client_name}</td>
-                                    <td className="px-4 py-2">{soa.account_receivable_date}</td>
-                                    <td className="px-4 py-2">{soa.due_date ?? '—'}</td>
+                                    <td className="px-4 py-2">{formatDate(soa.account_receivable_date)}</td>
+                                    <td className="px-4 py-2">{formatDate(soa.due_date)}</td>
                                     <td className="px-4 py-2">
                                         <Badge variant={statusBadgeVariant(soa.status)}>
                                             {soa.status}

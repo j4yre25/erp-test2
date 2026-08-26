@@ -77,6 +77,17 @@ function formatCurrency(amount: number): string {
     }).format(amount);
 }
 
+function formatDate(dateString: string | null): string {
+    if (!dateString) return '—';
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return dateString;
+    return new Intl.DateTimeFormat('en-US', {
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric',
+    }).format(date);
+}
+
 function statusBadgeVariant(status: string): 'default' | 'secondary' | 'outline' | 'destructive' {
     switch (status) {
         case 'approved':
@@ -110,7 +121,7 @@ export default function GeneralManagerSoaShow() {
                         <div className="flex items-center gap-2">
                             <Heading
                                 title={soa.account_receivable_number}
-                                description={`Executive Review for ${soa.client.name} (Cutoff: ${soa.payroll_period.start_date} - ${soa.payroll_period.end_date})`}
+                                description={`Executive Review for ${soa.client.name} (Cutoff: ${formatDate(soa.payroll_period.start_date)} - ${formatDate(soa.payroll_period.end_date)})`}
                             />
                             <Badge variant={statusBadgeVariant(soa.status)}>
                                 {soa.status}
@@ -236,7 +247,8 @@ export default function GeneralManagerSoaShow() {
                     <Alert className="border-emerald-500 bg-emerald-50 text-emerald-950 dark:bg-emerald-950/50 dark:text-emerald-200">
                         <AlertTitle>Official Booked Receivable</AlertTitle>
                         <AlertDescription>
-                            Approved by {soa.approved_by} on {soa.approved_at}. Due date is set to <strong>{soa.due_date}</strong>.
+                            Approved by {soa.approved_by} on {formatDate(soa.approved_at)}. Due date is set to{' '}
+                            <strong>{formatDate(soa.due_date)}.</strong>
                         </AlertDescription>
                     </Alert>
                 )}
@@ -363,21 +375,21 @@ export default function GeneralManagerSoaShow() {
                                     {soa.submitted_by && (
                                         <div className="text-xs bg-blue-50 text-blue-900 rounded p-2 border border-blue-200 dark:bg-blue-950/40 dark:text-blue-200 dark:border-blue-800">
                                             <div className="font-medium">Submitted by {soa.submitted_by}</div>
-                                            <div className="text-muted-foreground">{soa.submitted_at}</div>
+                                            <div className="text-muted-foreground">{formatDate(soa.submitted_at)}</div>
                                         </div>
                                     )}
 
                                     {soa.approved_by && (
                                         <div className="text-xs bg-emerald-50 text-emerald-900 rounded p-2 border border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-200 dark:border-emerald-800">
                                             <div className="font-medium">Approved by {soa.approved_by}</div>
-                                            <div className="text-muted-foreground">{soa.approved_at}</div>
+                                            <div className="text-muted-foreground">{formatDate(soa.approved_at)}</div>
                                         </div>
                                     )}
 
                                     {soa.rejected_by && (
                                         <div className="text-xs bg-rose-50 text-rose-900 rounded p-2 border border-rose-200 dark:bg-rose-950/40 dark:text-rose-200 dark:border-rose-800">
                                             <div className="font-medium">Rejected by {soa.rejected_by}</div>
-                                            <div className="text-muted-foreground">{soa.rejected_at}</div>
+                                            <div className="text-muted-foreground">{formatDate(soa.rejected_at)}</div>
                                         </div>
                                     )}
                                 </div>

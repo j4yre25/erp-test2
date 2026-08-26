@@ -66,6 +66,17 @@ function formatCurrency(amount: number): string {
     }).format(amount);
 }
 
+function formatDate(dateString: string | null): string {
+    if (!dateString) return '—';
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return dateString;
+    return new Intl.DateTimeFormat('en-US', {
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric',
+    }).format(date);
+}
+
 function statusBadgeVariant(status: string): 'default' | 'secondary' | 'outline' | 'destructive' {
     switch (status) {
         case 'approved':
@@ -92,7 +103,7 @@ export default function StatementOfAccountsShow() {
                         <div className="flex items-center gap-2">
                             <Heading
                                 title={soa.account_receivable_number}
-                                description={`Client: ${soa.client.name} | Period: ${soa.payroll_period.start_date} to ${soa.payroll_period.end_date}`}
+                                description={`Client: ${soa.client.name} | Period: ${formatDate(soa.payroll_period.start_date)} to ${formatDate(soa.payroll_period.end_date)}`}
                             />
                             <Badge variant={statusBadgeVariant(soa.status)}>
                                 {soa.status}
@@ -129,7 +140,7 @@ export default function StatementOfAccountsShow() {
                         <AlertDescription className="space-y-1">
                             <p className="font-medium">Reason: {soa.rejection_reason}</p>
                             <p className="text-xs">
-                                Evaluated by {soa.rejected_by} on {soa.rejected_at}. You may edit and resubmit.
+                                Evaluated by {soa.rejected_by} on {formatDate(soa.rejected_at)}. You may edit and resubmit.
                             </p>
                         </AlertDescription>
                     </Alert>
@@ -241,12 +252,12 @@ export default function StatementOfAccountsShow() {
 
                                 <div className="border-t pt-3">
                                     <span className="text-xs font-semibold uppercase text-muted-foreground">Statement Date</span>
-                                    <p className="font-medium">{soa.account_receivable_date}</p>
+                                    <p className="font-medium">{formatDate(soa.account_receivable_date)}</p>
                                 </div>
 
                                 <div>
                                     <span className="text-xs font-semibold uppercase text-muted-foreground">Payment Due Date</span>
-                                    <p className="font-medium">{soa.due_date ?? 'Pending GM approval'}</p>
+                                    <p className="font-medium">{soa.due_date ? formatDate(soa.due_date) : 'Pending GM approval'}</p>
                                 </div>
 
                                 <div className="border-t pt-3 space-y-2">
@@ -255,21 +266,21 @@ export default function StatementOfAccountsShow() {
                                     {soa.submitted_by && (
                                         <div className="text-xs bg-muted/40 rounded p-2">
                                             <div className="font-medium">Submitted by {soa.submitted_by}</div>
-                                            <div className="text-muted-foreground">{soa.submitted_at}</div>
+                                            <div className="text-muted-foreground">{formatDate(soa.submitted_at)}</div>
                                         </div>
                                     )}
 
                                     {soa.approved_by && (
                                         <div className="text-xs bg-emerald-50 text-emerald-900 rounded p-2 border border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-200 dark:border-emerald-800">
                                             <div className="font-medium">Approved by {soa.approved_by}</div>
-                                            <div className="text-muted-foreground">{soa.approved_at}</div>
+                                            <div className="text-muted-foreground">{formatDate(soa.approved_at)}</div>
                                         </div>
                                     )}
 
                                     {soa.rejected_by && (
                                         <div className="text-xs bg-rose-50 text-rose-900 rounded p-2 border border-rose-200 dark:bg-rose-950/40 dark:text-rose-200 dark:border-rose-800">
                                             <div className="font-medium">Rejected by {soa.rejected_by}</div>
-                                            <div className="text-muted-foreground">{soa.rejected_at}</div>
+                                            <div className="text-muted-foreground">{formatDate(soa.rejected_at)}</div>
                                         </div>
                                     )}
                                 </div>

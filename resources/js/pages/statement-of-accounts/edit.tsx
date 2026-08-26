@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { index, show } from '@/routes/statement-of-accounts';
+import { DatePicker } from '@/components/ui/date-picker';
 
 type SoaFormData = {
     id: number;
@@ -49,12 +50,11 @@ export default function StatementOfAccountsEdit() {
                         <>
                             <div className="grid gap-2">
                                 <Label htmlFor="account_receivable_date">Statement Date</Label>
-                                <Input
+                                <DatePicker
                                     id="account_receivable_date"
                                     name="account_receivable_date"
-                                    type="date"
+                                    value={soa.account_receivable_date}
                                     required
-                                    defaultValue={soa.account_receivable_date}
                                 />
                                 <InputError message={errors.account_receivable_date} />
                             </div>
@@ -65,9 +65,8 @@ export default function StatementOfAccountsEdit() {
                                     <Input
                                         id="subtotal"
                                         name="subtotal"
-                                        type="number"
-                                        step="0.01"
-                                        min={0}
+                                        type="text"
+                                        inputMode="decimal"
                                         required
                                         defaultValue={soa.subtotal}
                                     />
@@ -79,9 +78,8 @@ export default function StatementOfAccountsEdit() {
                                     <Input
                                         id="tax_amount"
                                         name="tax_amount"
-                                        type="number"
-                                        step="0.01"
-                                        min={0}
+                                        type="text"
+                                        inputMode="decimal"
                                         required
                                         defaultValue={soa.tax_amount}
                                     />

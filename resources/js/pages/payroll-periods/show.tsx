@@ -50,6 +50,17 @@ function formatCurrency(amount: number): string {
     }).format(amount);
 }
 
+function formatDate(dateString: string | null): string {
+    if (!dateString) return '—';
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return dateString;
+    return new Intl.DateTimeFormat('en-US', {
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric',
+    }).format(date);
+}
+
 export default function PayrollPeriodsShow() {
     const { period, can } = usePage<PageProps>().props;
 
@@ -70,7 +81,7 @@ export default function PayrollPeriodsShow() {
                         <div className="flex items-center gap-2">
                             <Heading
                                 title={period.client_name}
-                                description={`Cutoff Period: ${period.start_date} to ${period.end_date}`}
+                                description={`Cutoff Period: ${formatDate(period.start_date)} to ${formatDate(period.end_date)}`}
                             />
                             <Badge variant={period.status === 'open' ? 'default' : 'secondary'}>
                                 {period.status}
