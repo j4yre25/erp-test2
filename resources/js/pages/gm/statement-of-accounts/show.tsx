@@ -245,7 +245,7 @@ export default function GeneralManagerSoaShow() {
 
                 {soa.status === 'approved' && (
                     <Alert className="border-emerald-500 bg-emerald-50 text-emerald-950 dark:bg-emerald-950/50 dark:text-emerald-200">
-                        <AlertTitle>Official Booked Receivable</AlertTitle>
+                        <AlertTitle>Billed</AlertTitle>
                         <AlertDescription>
                             Approved by {soa.approved_by} on {formatDate(soa.approved_at)}. Due date is set to{' '}
                             <strong>{formatDate(soa.due_date)}.</strong>
